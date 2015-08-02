@@ -1,0 +1,61 @@
+/*
+ * The Build Script For Codekraft Core, The Main Server Core For Codekraft
+ */
+
+plugins {
+	id 'java'
+	id'eclipse'
+	id 'com.github.johnrengelman.shadow' version '1.2.1'
+	id "com.github.hierynomus.license" version "0.11.0"
+}
+
+sourceCompatibility = 1.8
+version = '1.0'
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'Codekraft Core',
+		'Implementation-Version': version
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		name 'sonotype-snapshot'
+		url 'https://oss.sonatype.org/content/repositories/snapshots'
+	}
+}
+
+dependencies {
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	compile group: 'net.md-5', name: 'bungeecord-api', version: '1.8-SNAPSHOT'
+	testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test { systemProperties 'property': 'value' }
+
+uploadArchives {
+	repositories { flatDir { dirs 'repos'
+		} }
+}
+
+license {
+	header file('LICENSE')
+	excludes([
+		'**/*.MD',
+		'**/*.properties',
+		'**/*.yml'
+	])
+	sourceSets = project.sourceSets
+	ignoreFailures false
+	strictCheck true
+	mapping { java = 'SLASHSTAR_STYLE' }
+}
+
+
+task push(type: Copy, dependsOn: 'build') {
+	from("build/libs") { include '*.jar' }
+	into "/Users/edds/Desktop/Servers/Bungee/plugins"
+}
+
+task wrapper(type: Wrapper) { gradleVersion = "2.4" }

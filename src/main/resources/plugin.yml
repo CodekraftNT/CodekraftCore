@@ -1,0 +1,5 @@
+name: Core
+main: net.codekrafter.server.core.CodekraftCore
+version: 1.0
+author: Codekrafter
+prefix: Core
